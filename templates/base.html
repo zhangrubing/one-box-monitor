@@ -4,9 +4,9 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>{% block title %}一体机监控系统{% endblock %}</title>
-  <link rel="stylesheet" href="{{ url_for('static', path='assets/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', path='assets/style.css') }}?v=1">
   <script>!function(){try{var t=localStorage.getItem('theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'};document.documentElement.setAttribute('data-theme',t)}catch(e){}}()</script>
-  <script src="{{ url_for('static', path='assets/common.js') }}" defer></script>
+  <script src="{{ url_for('static', path='assets/common.js') }}?v=1" defer></script>
   <meta http-equiv="Cache-Control" content="no-store"/>
   <meta http-equiv="Pragma" content="no-cache"/>
   <meta http-equiv="Expires" content="0"/>
