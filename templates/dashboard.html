@@ -12,8 +12,17 @@
   <div class="bd"><div>CPU 实时 <span id="cpu_rt">--%</span> | GPU 实时 <span id="gpu_rt">--%</span></div></div>
 </div>
 <script>
-  apiGet('/api/metrics/system').then(d=>{ cpu.textContent=d.cpu+'%'; mem.textContent=d.mem+'%'; gpu.textContent=d.gpu+'%'; al.textContent=d.alerts; });
-  mountSSE('/events/metrics', d=>{ cpu_rt.textContent=d.cpu+'%'; gpu_rt.textContent=d.gpu+'%'; });
-</script>
+  window.addEventListener('DOMContentLoaded', ()=>{
+    apiGet('/api/metrics/system').then(d=>{
+      cpu.textContent = d.cpu + '%';
+      mem.textContent = d.mem + '%';
+      gpu.textContent = d.gpu + '%';
+      al.textContent = d.alerts;
+    });
+    mountSSE('/events/metrics', d => {
+      cpu_rt.textContent = d.cpu + '%';
+      gpu_rt.textContent = d.gpu + '%';
+    });
+  });
+  </script>
 {% endblock %}
-
