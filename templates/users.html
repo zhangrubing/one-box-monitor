@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}用户管理 · 一体机监控系统{% endblock %}
+{% block content %}
+<div class="panel">
+  <div class="hd"><div>用户列表</div><button class="btn" onclick="loadUsers()">刷新</button></div>
+  <div class="bd">
+    <table>
+      <thead><tr><th>用户名</th><th>邮箱</th><th>角色</th><th>状态</th><th>最后登录</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</div>
+<script>
+async function loadUsers(){
+  const rows = await apiGet('/api/users');
+  tbody.innerHTML = rows.map(x => `<tr><td>${x.u}</td><td>${x.e||''}</td><td>${x.r}</td><td>${x.s}</td><td>${x.t}</td></tr>`).join('');
+}
+window.addEventListener('DOMContentLoaded', loadUsers);
+</script>
+{% endblock %}
+

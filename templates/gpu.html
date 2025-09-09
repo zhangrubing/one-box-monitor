@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}GPU 详表 · 一体机监控系统{% endblock %}
+{% block content %}
+<div class="panel"><div class="hd"><div>GPU 详细信息</div><button class="btn" onclick="loadGPU()">刷新</button></div>
+<div class="bd">
+  <table>
+    <thead><tr><th>#</th><th>型号</th><th>温度</th><th>功耗</th><th>利用率</th><th>显存</th></tr></thead>
+    <tbody id="gpu_tbody"></tbody>
+  </table>
+</div></div>
+<script>
+function loadGPU(){
+  apiGet('/api/gpu').then(list=>{
+    if(!Array.isArray(list)) list=[];
+    gpu_tbody.innerHTML = list.map(g=>{
+      const mem = (g.mem_used_mb||0) + ' / ' + (g.mem_total_mb||0) + ' MB';
+      return `<tr><td>GPU${g.id}</td><td>${g.name||'-'}</td><td>${g.temp_c??'-'}℃</td><td>${g.power_w??'-'}W</td><td>${g.util??0}%</td><td>${mem}</td></tr>`;
+    }).join('');
+    if(!list.length){ gpu_tbody.innerHTML = '<tr><td colspan="6">未检测到 NVIDIA GPU 或驱动</td></tr>'; }
+  });
+}
+window.addEventListener('DOMContentLoaded', loadGPU);
+</script>
+{% endblock %}

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>{% block title %}一体机监控系统{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='assets/style.css') }}">
+  <script>!function(){try{var t=localStorage.getItem('theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'};document.documentElement.setAttribute('data-theme',t)}catch(e){}}()</script>
+  <script src="{{ url_for('static', path='assets/common.js') }}" defer></script>
+  <meta http-equiv="Cache-Control" content="no-store"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <meta http-equiv="Expires" content="0"/>
+  </head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand"><div class="logo"></div><div><div class="t1">一体机监控系统</div><div class="t2">OneBox · 单机</div></div></div>
+    <nav class="nav">
+      <div class="nav-sec">导航</div>
+      <a href="/" class="{{ 'active' if active=='dashboard' else '' }}">📊 仪表盘</a>
+      <a href="/hardware" class="{{ 'active' if active=='hardware' else '' }}">🧩 硬件与系统</a>
+      <a href="/gpu" class="{{ 'active' if active=='gpu' else '' }}">🖥️ GPU 详表</a>
+      <a href="/network" class="{{ 'active' if active=='network' else '' }}">🌐 网络接口</a>
+      <a href="/storage" class="{{ 'active' if active=='storage' else '' }}">💾 存储与磁盘</a>
+      <a href="/logs" class="{{ 'active' if active=='logs' else '' }}">📜 日志查看</a>
+      <a href="/alerts" class="{{ 'active' if active=='alerts' else '' }}">🚨 告警中心</a>
+      <a href="/operations" class="{{ 'active' if active=='operations' else '' }}">🧰 运维操作</a>
+      <a href="/settings" class="{{ 'active' if active=='settings' else '' }}">⚙️ 设置与基础</a>
+      <a href="/reports" class="{{ 'active' if active=='reports' else '' }}">🧷 报表与导出</a>
+      <a href="/users" class="{{ 'active' if active=='users' else '' }}">👤 用户管理</a>
+      <a href="/audit" class="{{ 'active' if active=='audit' else '' }}">🛡️ 审计</a>
+      <a href="/about" class="{{ 'active' if active=='about' else '' }}">ℹ️ 关于本机</a>
+    </nav>
+  </aside>
+  <div>
+    <header class="top">
+      <div class="search">🔎 <input placeholder="搜索..." /></div>
+      <div class="actions">
+        <button class="btn" id="themeToggle" title="切换明暗">🌙</button>
+        <div class="tag">用户: {{ user.username }}</div>
+        <a class="btn" href="/logout">退出</a>
+      </div>
+    </header>
+    <main>{% block content %}{% endblock %}</main>
+  </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}告警中心 · 英智AI监控系统{% endblock %}
+{% block content %}
+<div class="panel"><div class="hd"><div>告警列表</div><button class="btn">批量确认</button></div>
+<div class="bd">
+<table>
+  <thead><tr><th>时间</th><th>对象</th><th>内容</th><th>级别</th><th>状态</th></tr></thead>
+  <tbody>
+    <tr><td>10:22</td><td>gpu0</td><td>温度 ≥ 85℃</td><td><span class="tag">严重</span></td><td>未确认</td></tr>
+  </tbody>
+</table>
+</div></div>
+{% endblock %}

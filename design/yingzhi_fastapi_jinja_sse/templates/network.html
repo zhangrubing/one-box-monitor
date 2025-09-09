@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}网络接口 · 英智AI监控系统{% endblock %}
+{% block content %}
+<div class="panel"><div class="hd"><div>网络接口</div><div class="tag">演示</div></div>
+<div class="bd">
+<table>
+  <thead><tr><th>接口</th><th>类型</th><th>状态</th><th>吞吐（Mb/s）</th><th>丢包</th><th>健康</th></tr></thead>
+  <tbody>
+    <tr><td>ib0</td><td>IB 200G</td><td>LinkUp</td><td>3200</td><td>0</td><td><span class="tag">正常</span></td></tr>
+    <tr><td>eth0</td><td>25G</td><td>UP</td><td>860</td><td>0</td><td><span class="tag">正常</span></td></tr>
+  </tbody>
+</table>
+</div></div>
+{% endblock %}

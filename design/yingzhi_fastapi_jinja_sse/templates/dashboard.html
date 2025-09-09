@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}仪表盘 · 英智AI监控系统{% endblock %}
+{% block content %}
+<section class="kpis">
+  <div class="kpi"><div class="label">CPU</div><div class="value" id="cpu">--%</div></div>
+  <div class="kpi"><div class="label">内存</div><div class="value" id="mem">--%</div></div>
+  <div class="kpi"><div class="label">GPU</div><div class="value" id="gpu">--%</div></div>
+  <div class="kpi"><div class="label">告警</div><div class="value" id="al">--</div></div>
+</section>
+<div class="panel">
+  <div class="hd"><div>实时指标（SSE）</div><div class="tag">每 2 秒更新</div></div>
+  <div class="bd"><div>CPU 实时：<span id="cpu_rt">--%</span> | GPU 实时：<span id="gpu_rt">--%</span></div></div>
+</div>
+<script>
+  apiGet('/api/metrics/system').then(d=>{ cpu.textContent=d.cpu+'%'; mem.textContent=d.mem+'%'; gpu.textContent=d.gpu+'%'; al.textContent=d.alerts; });
+  mountSSE('/events/metrics', d=>{ cpu_rt.textContent=d.cpu+'%'; gpu_rt.textContent=d.gpu+'%'; });
+</script>
+{% endblock %}

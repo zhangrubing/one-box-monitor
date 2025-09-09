@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}存储与磁盘 · 一体机监控系统{% endblock %}
+{% block content %}
+<div class="panel"><div class="hd"><div>磁盘 / 分区</div><button class="btn" onclick="loadDisks()">刷新</button></div>
+<div class="bd">
+<table>
+  <thead><tr><th>设备</th><th>挂载点</th><th>类型</th><th>总量(GB)</th><th>已用(GB)</th><th>使用率</th></tr></thead>
+  <tbody id="disk_tbody"></tbody>
+</table>
+</div></div>
+<script>
+function loadDisks(){
+  apiGet('/api/storage/disks').then(rows=>{
+    disk_tbody.innerHTML = rows.map(x => `<tr><td>${x.device}</td><td>${x.mountpoint}</td><td>${x.fstype}</td><td>${x.total_gb??'-'}</td><td>${x.used_gb??'-'}</td><td>${x.percent??'-'}%</td></tr>`).join('');
+  });
+}
+window.addEventListener('DOMContentLoaded', loadDisks);
+</script>
+{% endblock %}

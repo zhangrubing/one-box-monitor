@@ -1,0 +1,51 @@
+本项目是用于 一体机的 硬件及系统的监控系统  
+技术框架采用:
+    后端框架：FastAPI（同步/异步混合友好、类型标注、文档自动化）
+
+    模板引擎：Jinja2（仅渲染外壳和注入少量上下文变量）
+
+    静态资源：StaticFiles 直接挂载，无构建工具
+
+    实时：SSE（HTTP 单向推流，浏览器原生 EventSource）
+
+    鉴权：HttpOnly Cookie + HS256 签名 token（单机足够；可换为服务端 session 存储）
+
+    前端：原生 JS，封装 20 来行工具函数（fetch + 401 跳转 + SSE）
+
+目录结构参考: 
+project/
+  backend/
+    app.py          # 路由、API、SSE、鉴权
+    crypto.py       # PBKDF2 密码哈希 + HS256 签名/验签（轻量 JWT）
+  templates/        # Jinja2 模板（外壳）
+    base.html
+    login.html
+    dashboard.html
+    users.html
+    hardware.html
+    gpu.html
+    network.html
+    storage.html
+    logs.html
+    alerts.html
+    operations.html
+    settings.html
+    reports.html
+    audit.html
+    about.html
+  static/
+    assets/
+      style.css     # 明亮/深色兼容、组件化样式
+      common.js     # apiGet/apiPost/mountSSE/片段刷新
+  requirements.txt
+  run.sh            # 一键运行（包含国内镜像优先）
+
+ 更多技术细节 参考: design/yingzhi_fastapi_jinja_sse 目录 
+ 静态页面参考:  design/static 目录
+
+数据库: 使用 SQLite 根据设计说明书和功能列表  创建必要的表支持功能的实现 
+
+根据以上内容  生成专业的项目源码  要求实现静态页面中的所有功能  前后端功能都需要实现  
+
+
+

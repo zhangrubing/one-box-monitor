@@ -1,0 +1,2 @@
+- **技术框架**：Python（FastAPI） + Jinja2 +  API
+- **数据库**： SQLite（单机版起步）  

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}GPU 详表 · 英智AI监控系统{% endblock %}
+{% block content %}
+<div class="panel"><div class="hd"><div>GPU 详细信息</div><div class="tag">演示</div></div>
+<div class="bd">
+  <table>
+    <thead><tr><th>设备</th><th>型号</th><th>温度</th><th>功耗</th><th>利用率</th><th>状态</th></tr></thead>
+    <tbody>
+      {% for i in range(8) %}
+      <tr><td>GPU{{ i }}</td><td>H100</td><td>{{ 60 + i }}℃</td><td>{{ 150 + i*10 }}W</td><td>{{ 30 + i*5 }}%</td><td><span class="tag">正常</span></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div></div>
+{% endblock %}

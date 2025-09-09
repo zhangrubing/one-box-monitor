@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>登录 · 英智AI监控系统</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='assets/style.css') }}">
+</head>
+<body style="display:grid;place-items:center;min-height:100vh">
+  <form class="card" method="post" action="/login" style="width:min(420px,92vw);padding:20px">
+    <h3>英智AI监控系统</h3>
+    {% if error %}<div class="tag" style="border-color:#fecaca;background:#fef2f2;color:#b91c1c">{{ error }}</div>{% endif %}
+    <div class="row"><label>用户名</label><input class="input" name="username" value="admin"></div>
+    <div class="row"><label>密码</label><input class="input" type="password" name="password" value="admin123"></div>
+    <div class="row" style="display:flex;justify-content:space-between;gap:8px">
+      <button class="btn" type="button" onclick="this.form.username.value='admin';this.form.password.value='admin123'">填充示例</button>
+      <button class="btn primary" type="submit">登录</button>
+    </div>
+  </form>
+</body></html>

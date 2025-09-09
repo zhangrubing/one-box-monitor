@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}网络接口 · 一体机监控系统{% endblock %}
+{% block content %}
+<div class="panel"><div class="hd"><div>网络接口</div><div>
+  <button class="btn" onclick="loadNet()">刷新</button>
+  <span class="tag">每 3 秒自动刷新</span>
+</div></div>
+<div class="bd">
+<table>
+  <thead><tr><th>接口</th><th>状态</th><th>速率(Mb/s)</th><th>上行(Mb/s)</th><th>下行(Mb/s)</th><th>IPv4</th><th>MAC</th></tr></thead>
+  <tbody id="net_tbody"></tbody>
+</table>
+</div></div>
+<script>
+function loadNet(){
+  apiGet('/api/network/interfaces').then(rows=>{
+    net_tbody.innerHTML = rows.map(x=>{
+      const st = x.isup? '<span class="tag">UP</span>' : '<span class="tag">DOWN</span>';
+      return `<tr><td>${x.name}</td><td>${st}</td><td>${x.speed_mbps||0}</td><td>${x.tx_rate_mbps||0}</td><td>${x.rx_rate_mbps||0}</td><td>${x.ipv4||''}</td><td>${x.mac||''}</td></tr>`;
+    }).join('');
+  });
+}
+window.addEventListener('DOMContentLoaded', ()=>{ loadNet(); setInterval(loadNet, 3000); });
+</script>
+{% endblock %}
