@@ -9,8 +9,17 @@
 </section>
 <div class="panel">
   <div class="hd"><div>实时指标（SSE）</div><div class="tag">每 2 秒更新</div></div>
-  <div class="bd"><div>CPU 实时 <span id="cpu_rt">--%</span> | GPU 实时 <span id="gpu_rt">--%</span></div></div>
+  <div class="bd"><div>CPU 实时 <span id="cpu_rt">--%</span> | GPU 实时 <span id="gpu_rt">--%</span> | 磁盘 IO <span id="disk_rt">--/-- MB/s</span></div></div>
 </div>
+<div class="panel">
+  <div class="hd"><div>CPU 使用率历史</div></div>
+  <div class="bd"><canvas id="cpuChart" height="100"></canvas></div>
+</div>
+<div class="panel">
+  <div class="hd"><div>磁盘 IO（MB/s）</div></div>
+  <div class="bd"><canvas id="diskChart" height="100"></canvas></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
   window.addEventListener('DOMContentLoaded', () => {
     const $ = (id) => document.getElementById(id);
@@ -23,9 +32,37 @@
       $('al').textContent  = d.alerts;
     });
 
+    const cpuCtx = document.getElementById('cpuChart').getContext('2d');
+    const diskCtx = document.getElementById('diskChart').getContext('2d');
+    const cpuChart = new Chart(cpuCtx, {
+      type: 'line',
+      data: { labels: [], datasets: [{ label: 'CPU %', data: [], borderColor: '#3b82f6', tension: .3 }]},
+      options: { animation: false, scales: { y: { beginAtZero: true, max: 100 } } }
+    });
+    const diskChart = new Chart(diskCtx, {
+      type: 'line',
+      data: { labels: [], datasets: [
+        { label: '读 MB/s', data: [], borderColor: '#16a34a', tension: .3 },
+        { label: '写 MB/s', data: [], borderColor: '#b91c1c', tension: .3 }
+      ]},
+      options: { animation: false, scales: { y: { beginAtZero: true } } }
+    });
+    function addData(chart, label, vals) {
+      chart.data.labels.push(label);
+      chart.data.datasets.forEach((ds, i) => ds.data.push(vals[i]));
+      if (chart.data.labels.length > 30) {
+        chart.data.labels.shift();
+        chart.data.datasets.forEach(ds => ds.data.shift());
+      }
+      chart.update();
+    }
     mountSSE('/events/metrics', d => {
       $('cpu_rt').textContent = d.cpu + '%';
       $('gpu_rt').textContent = d.gpu + '%';
+      $('disk_rt').textContent = d.disk_read.toFixed(1) + '/' + d.disk_write.toFixed(1) + ' MB/s';
+      const t = new Date().toLocaleTimeString();
+      addData(cpuChart, t, [d.cpu]);
+      addData(diskChart, t, [d.disk_read, d.disk_write]);
     });
   });
 </script>

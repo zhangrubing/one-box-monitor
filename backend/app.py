@@ -28,6 +28,8 @@ templates = Jinja2Templates(directory=TEMPLATES_DIR)
 
 # ---- in-memory state for rates ----
 PREV_NET: Dict[str, Dict[str, Any]] = {}
+# keep previous disk io counters for rate calculation
+PREV_DISK: Dict[str, Any] = {}
 
 
 # ---- startup: init db and seed ----
@@ -257,10 +259,21 @@ async def sse_metrics(request: Request):
     authed(request)
 
     async def gen():
+        global PREV_DISK
         while True:
+            io = psutil.disk_io_counters()
+            now = time.time()
+            read_rate = write_rate = 0.0
+            if PREV_DISK:
+                dt = max(0.001, now - PREV_DISK['ts'])
+                read_rate = (io.read_bytes - PREV_DISK['read']) / dt / 1024 / 1024
+                write_rate = (io.write_bytes - PREV_DISK['write']) / dt / 1024 / 1024
+            PREV_DISK = {'ts': now, 'read': io.read_bytes, 'write': io.write_bytes}
             data = {
                 "cpu": psutil.cpu_percent(interval=None),
-                "gpu": (_gpu_avg_util() or 0.0)
+                "gpu": (_gpu_avg_util() or 0.0),
+                "disk_read": round(read_rate, 2),
+                "disk_write": round(write_rate, 2)
             }
             yield f"data: {json.dumps(data, ensure_ascii=False)}\n\n"
             await asyncio.sleep(2)
